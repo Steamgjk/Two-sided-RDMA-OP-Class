@@ -1,24 +1,30 @@
-.PHONY: clean
+all: server client test_client
 CC=g++
-CFLAGS  := -Wall -g -fpermissive -std=c++11
-LD      := g++
-LDLIBS  := ${LDLIBS} -lrdmacm -libverbs -lpthread
-APPS    := client server test_client
+TARGET = server
+TARGET1 = client
+TARGET2 = test_client
+LIBS=-libverbs -lrdmacm -pthread -libverbs -lrdmacm
+CFLAGS=-Wall -g -fpermissive -std=c++11
+OBJS=common.o server.o
+OBJS1=common.o client.o
+OBJS2=test_client.o common.o client_op.o 
 
-all: ${APPS}
-
-test_client: common.o client_op.o test_client.o
-	${CC} $(CFLAGS) -o $@ $^ ${LDLIBS}
-
-client: common.o client.o
-	${CC} $(CFLAGS) -o $@ $^ ${LDLIBS}
-
-server: common.o server.o
-	${CC} $(CFLAGS) -o $@ $^ ${LDLIBS}
-
-client_op.o: client_op.o
-	${CC} $(CFLAGS) -o $@ $^ ${LDLIBS}
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS) $(LIBS)
+$(TARGET1): $(OBJS1)
+	$(CC) $(CFLAGS) -o $(TARGET1) $(OBJS1) $(LIBS)
+$(TARGET2): $(OBJS2)
+	$(CC) $(CFLAGS) -o $(TARGET2) $(OBJS2) $(LIBS)
+server.o: server.cpp
+	$(CC) $(CFLAGS) -c server.cpp
+client.o: ps.cpp
+	$(CC) $(CFLAGS) -c client.cpp
+test_client.o: ps.cpp
+	$(CC) $(CFLAGS) -c test_client.cpp
+common.o: common.cpp
+	$(CC) $(CFLAGS) -c common.cpp
+client_op.o: client_op.cpp
+	$(CC) $(CFLAGS) -c client_op.cpp
 
 clean:
-	rm -f *.o ${APPS}
-
+	rm -rf *.o  *~
