@@ -76,6 +76,9 @@ static void send_next_chunk(struct rdma_cm_id *id)
   {
     std::this_thread::sleep_for(std::chrono::milliseconds(30));
   }
+  printf("send tchunk...\n");
+  printf("buf= %s\n", ctx->buffer );
+  getchar();
   write_remote(id, ctx->buf_len);
 }
 
