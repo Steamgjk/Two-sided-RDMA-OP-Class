@@ -16,6 +16,9 @@ client: common.o client.o
 server: common.o server.o
 	${CC} $(CFLAGS) -o $@ $^ ${LDLIBS}
 
+client_op.o: client_op.o
+	${CC} $(CFLAGS) -o $@ $^ ${LDLIBS}
+
 clean:
 	rm -f *.o ${APPS}
 
