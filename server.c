@@ -13,9 +13,6 @@ struct conn_context
 
   struct message *msg;
   struct ibv_mr *msg_mr;
-
-  int fd;
-  char file_name[MAX_FILE_NAME];
 };
 
 static void send_message(struct rdma_cm_id *id)
@@ -59,7 +56,6 @@ static void on_pre_conn(struct rdma_cm_id *id)
 
   id->context = ctx;
 
-  ctx->file_name[0] = '\0'; // take this to mean we don't have the file name
 
   posix_memalign((void **)&ctx->buffer, sysconf(_SC_PAGESIZE), BUFFER_SIZE);
   TEST_Z(ctx->buffer_mr = ibv_reg_mr(rc_get_pd(), ctx->buffer, BUFFER_SIZE, IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_WRITE));
@@ -112,27 +108,9 @@ static void on_completion(struct ibv_wc *wc)
 
       ctx->msg->id = MSG_READY;
       send_message(id);
-      getchar();
 
     }
-    /*
-    else {
-      memcpy(ctx->file_name, ctx->buffer, (size > MAX_FILE_NAME) ? MAX_FILE_NAME : size);
-      ctx->file_name[size - 1] = '\0';
 
-      printf("opening file %s\n", ctx->file_name);
-
-      ctx->fd = open(ctx->file_name, O_WRONLY | O_CREAT | O_EXCL, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-
-      if (ctx->fd == -1)
-        rc_die("open() failed");
-
-      post_receive(id);
-
-      ctx->msg->id = MSG_READY;
-      send_message(id);
-    }
-    **/
   }
 }
 
@@ -140,7 +118,6 @@ static void on_disconnect(struct rdma_cm_id *id)
 {
   struct conn_context *ctx = (struct conn_context *)id->context;
 
-  close(ctx->fd);
 
   ibv_dereg_mr(ctx->buffer_mr);
   ibv_dereg_mr(ctx->msg_mr);
@@ -148,7 +125,7 @@ static void on_disconnect(struct rdma_cm_id *id)
   free(ctx->buffer);
   free(ctx->msg);
 
-  printf("finished transferring %s\n", ctx->file_name);
+  printf("finished transferring\n");
 
   free(ctx);
 }
