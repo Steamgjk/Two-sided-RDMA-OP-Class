@@ -139,11 +139,6 @@ int main(int argc, char **argv)
 {
   struct client_context ctx;
 
-  if (argc != 3)
-  {
-    fprintf(stderr, "usage: %s <server-address> <file-name>\n", argv[0]);
-    return 1;
-  }
   string remote_ip = "12.12.10.16";
   string file_name = "testfile";
   if (argc >= 2)
