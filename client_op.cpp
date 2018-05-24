@@ -129,8 +129,9 @@ void client_op::run()
 	    NULL, // on connect
 	    on_completion,
 	    NULL); // on disconnect
-
-	rc_client_loop(remote_ip.c_str(), remote_port, &ctx);
+	char rport[30];
+	itoa(remote_port, rport, 10);
+	rc_client_loop(remote_ip.c_str(), rport, &ctx);
 }
 void client_op::prepare_data(char* buf2send, size_t buf2send_len)
 {

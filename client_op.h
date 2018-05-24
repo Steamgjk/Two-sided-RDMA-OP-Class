@@ -2,6 +2,7 @@
 #include <libgen.h>
 #include <string>
 #include <thread>
+#include <unistd.h>
 #include "common.h"
 #include "messages.h"
 using namespace std;
