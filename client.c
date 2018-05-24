@@ -7,6 +7,8 @@ using namespace std;
 struct client_context
 {
   char *buffer;
+  size_t buf_len;
+  bool buf_prepared;
   struct ibv_mr *buffer_mr;
 
   struct message *msg;
@@ -15,9 +17,7 @@ struct client_context
   uint64_t peer_addr;
   uint32_t peer_rkey;
 };
-char*  buf2send = NULL;
-size_t buf_len = 0;
-bool buf_prepared = false;
+
 
 static void write_remote(struct rdma_cm_id *id, uint32_t len)
 {
@@ -68,15 +68,14 @@ static void post_receive(struct rdma_cm_id *id)
   TEST_NZ(ibv_post_recv(id->qp, &wr, &bad_wr));
 }
 
-static void send_next_chunk(struct rdma_cm_id *id, char* buf, size_t len)
+static void send_next_chunk(struct rdma_cm_id *id)
 {
   struct client_context *ctx = (struct client_context *)id->context;
   while (!buf_prepared)
   {
     std::this_thread::sleep_for(std::chrono::milliseconds(30));
   }
-  ctx->buffer = buf;
-  write_remote(id, len);
+  write_remote(id, ctx->buf_len);
 }
 
 static void send_file_name(struct rdma_cm_id *id)
@@ -149,8 +148,9 @@ int main(int argc, char **argv)
   }
   char* str = "testok";
   buf_len = strlen(str);
-  buf2send = (char*) malloc(buf_len);
-  memcpy(buf, str, buf_len);
+  ctx.buffer = (char*) malloc(buf_len);
+  memcpy(ctx.buffer, str, buf_len);
+  ctx.buf_prepared = true;
 
   rc_init(
     on_pre_conn,
