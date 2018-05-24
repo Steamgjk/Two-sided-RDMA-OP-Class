@@ -87,7 +87,7 @@ static void send_next_chunk(struct rdma_cm_id *id)
 static void on_pre_conn(struct rdma_cm_id *id)
 {
   struct client_context *ctx = (struct client_context *)id->context;
-
+  printf("hehre in on_pre_conn  ctx.buf=%p  %s\n", ctx->buffer, ctx->buffer );
   posix_memalign((void **)&ctx->buffer, sysconf(_SC_PAGESIZE), BUFFER_SIZE);
   TEST_Z(ctx->buffer_mr = ibv_reg_mr(rc_get_pd(), ctx->buffer, BUFFER_SIZE, IBV_ACCESS_LOCAL_WRITE));
 
@@ -148,7 +148,7 @@ int main(int argc, char **argv)
   ctx.buffer = (char*) malloc(ctx.buf_len);
   memcpy(ctx.buffer, str, ctx.buf_len);
   ctx.buf_prepared = true;
-
+  printf("ctx.buf=%p  %s\n", ctx.buffer, ctx.buffer );
   rc_init(
     on_pre_conn,
     NULL, // on connect
