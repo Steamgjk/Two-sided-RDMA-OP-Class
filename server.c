@@ -86,31 +86,40 @@ static void on_completion(struct ibv_wc *wc)
   struct rdma_cm_id *id = (struct rdma_cm_id *)(uintptr_t)wc->wr_id;
   struct conn_context *ctx = (struct conn_context *)id->context;
 
-  if (wc->opcode == IBV_WC_RECV_RDMA_WITH_IMM) {
+  if (wc->opcode == IBV_WC_RECV_RDMA_WITH_IMM)
+  {
     uint32_t size = ntohl(wc->imm_data);
 
-    if (size == 0) {
+    if (size == 0)
+    {
       ctx->msg->id = MSG_DONE;
       send_message(id);
 
       // don't need post_receive() since we're done with this connection
 
-    } else if (ctx->file_name[0]) {
+    }
+    //else if (ctx->file_name[0])
+    else
+    {
       ssize_t ret;
 
       printf("received %i bytes.\n", size);
 
-      ret = write(ctx->fd, ctx->buffer, size);
+      /*
+            ret = write(ctx->fd, ctx->buffer, size);
 
-      if (ret != size)
-        rc_die("write() failed");
-
+            if (ret != size)
+              rc_die("write() failed");
+      **/
+      printf("ctx->buffer=%s\n", ctx->buffer );
       post_receive(id);
 
       ctx->msg->id = MSG_READY;
       send_message(id);
 
-    } else {
+    }
+    /*
+    else {
       memcpy(ctx->file_name, ctx->buffer, (size > MAX_FILE_NAME) ? MAX_FILE_NAME : size);
       ctx->file_name[size - 1] = '\0';
 
@@ -126,6 +135,7 @@ static void on_completion(struct ibv_wc *wc)
       ctx->msg->id = MSG_READY;
       send_message(id);
     }
+    **/
   }
 }
 

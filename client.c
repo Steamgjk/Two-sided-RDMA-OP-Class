@@ -116,8 +116,9 @@ static void on_completion(struct ibv_wc *wc)
       ctx->peer_addr = ctx->msg->data.mr.addr;
       ctx->peer_rkey = ctx->msg->data.mr.rkey;
 
-      printf("received MR, sending file name\n");
-      send_file_name(id);
+      printf("received MR, sending file name(obsolete), send chunk\n");
+      //send_file_name(id);
+      send_next_chunk(id);
     }
     else if (ctx->msg->id == MSG_READY)
     {
