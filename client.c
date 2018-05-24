@@ -1,9 +1,9 @@
 #include <fcntl.h>
 #include <libgen.h>
-
+#include <string>
 #include "common.h"
 #include "messages.h"
-
+using namespace std;
 struct client_context
 {
   char *buffer;
@@ -35,7 +35,8 @@ static void write_remote(struct rdma_cm_id *id, uint32_t len)
   wr.wr.rdma.remote_addr = ctx->peer_addr;
   wr.wr.rdma.rkey = ctx->peer_rkey;
 
-  if (len) {
+  if (len)
+  {
     wr.sg_list = &sge;
     wr.num_sge = 1;
 
@@ -108,17 +109,23 @@ static void on_completion(struct ibv_wc *wc)
   struct rdma_cm_id *id = (struct rdma_cm_id *)(uintptr_t)(wc->wr_id);
   struct client_context *ctx = (struct client_context *)id->context;
 
-  if (wc->opcode & IBV_WC_RECV) {
-    if (ctx->msg->id == MSG_MR) {
+  if (wc->opcode & IBV_WC_RECV)
+  {
+    if (ctx->msg->id == MSG_MR)
+    {
       ctx->peer_addr = ctx->msg->data.mr.addr;
       ctx->peer_rkey = ctx->msg->data.mr.rkey;
 
       printf("received MR, sending file name\n");
       send_file_name(id);
-    } else if (ctx->msg->id == MSG_READY) {
+    }
+    else if (ctx->msg->id == MSG_READY)
+    {
       printf("received READY, sending chunk\n");
       send_next_chunk(id);
-    } else if (ctx->msg->id == MSG_DONE) {
+    }
+    else if (ctx->msg->id == MSG_DONE)
+    {
       printf("received DONE, disconnecting\n");
       rc_disconnect(id);
       return;
@@ -132,15 +139,27 @@ int main(int argc, char **argv)
 {
   struct client_context ctx;
 
-  if (argc != 3) {
+  if (argc != 3)
+  {
     fprintf(stderr, "usage: %s <server-address> <file-name>\n", argv[0]);
     return 1;
   }
+  string remote_ip = "12.12.10.16";
+  string file_name = "testfile";
+  if (argc >= 2)
+  {
+    remote_ip = argv[1];
+  }
+  if (argc >= 3)
+  {
+    file_name = argv[2];
+  }
 
-  ctx.file_name = basename(argv[2]);
-  ctx.fd = open(argv[2], O_RDONLY);
+  ctx.file_name = basename(file_name.c_str());
+  ctx.fd = open(file_name.c_str(), O_RDONLY);
 
-  if (ctx.fd == -1) {
+  if (ctx.fd == -1)
+  {
     fprintf(stderr, "unable to open input file \"%s\"\n", ctx.file_name);
     return 1;
   }
@@ -151,7 +170,7 @@ int main(int argc, char **argv)
     on_completion,
     NULL); // on disconnect
 
-  rc_client_loop(argv[1], DEFAULT_PORT, &ctx);
+  rc_client_loop(remote_ip.c_str(), DEFAULT_PORT, &ctx);
 
   close(ctx.fd);
 
