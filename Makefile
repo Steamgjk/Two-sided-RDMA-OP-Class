@@ -17,9 +17,9 @@ $(TARGET2): $(OBJS2)
 	$(CC) $(CFLAGS) -o $(TARGET2) $(OBJS2) $(LIBS)
 server.o: server.cpp
 	$(CC) $(CFLAGS) -c server.cpp
-client.o: ps.cpp
+client.o: client.cpp
 	$(CC) $(CFLAGS) -c client.cpp
-test_client.o: ps.cpp
+test_client.o: test_client.cpp
 	$(CC) $(CFLAGS) -c test_client.cpp
 common.o: common.cpp
 	$(CC) $(CFLAGS) -c common.cpp
