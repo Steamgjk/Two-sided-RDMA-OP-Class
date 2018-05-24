@@ -8,7 +8,7 @@ using namespace std;
 struct client_context
 {
 	char *buffer;
-	size_t buf_len;
+	size_t buffer_len;
 	bool buf_prepared;
 	struct ibv_mr *buffer_mr;
 
