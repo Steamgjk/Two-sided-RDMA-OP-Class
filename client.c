@@ -72,7 +72,7 @@ static void post_receive(struct rdma_cm_id *id)
 static void send_next_chunk(struct rdma_cm_id *id)
 {
   struct client_context *ctx = (struct client_context *)id->context;
-  while (!buf_prepared)
+  while (!ctx->buf_prepared)
   {
     std::this_thread::sleep_for(std::chrono::milliseconds(30));
   }
