@@ -107,7 +107,6 @@ static void on_completion(struct ibv_wc *wc)
 
       printf("received %i bytes.\n", size);
 
-
       printf("ctx->buffer=%s\n", ctx->buffer );
       post_receive(id);
 

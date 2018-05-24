@@ -14,10 +14,10 @@ struct client_context
 
   uint64_t peer_addr;
   uint32_t peer_rkey;
-
-  int fd;
-  const char *file_name;
 };
+char*  buf2send = NULL;
+size_t buf_len = 0;
+bool buf_prepared = false;
 
 static void write_remote(struct rdma_cm_id *id, uint32_t len)
 {
@@ -68,18 +68,15 @@ static void post_receive(struct rdma_cm_id *id)
   TEST_NZ(ibv_post_recv(id->qp, &wr, &bad_wr));
 }
 
-static void send_next_chunk(struct rdma_cm_id *id)
+static void send_next_chunk(struct rdma_cm_id *id, char* buf, size_t len)
 {
   struct client_context *ctx = (struct client_context *)id->context;
-
-  ssize_t size = 0;
-
-  size = read(ctx->fd, ctx->buffer, BUFFER_SIZE);
-
-  if (size == -1)
-    rc_die("read() failed\n");
-
-  write_remote(id, size);
+  while (!buf_prepared)
+  {
+    std::this_thread::sleep_for(std::chrono::milliseconds(30));
+  }
+  ctx->buffer = buf;
+  write_remote(id, len);
 }
 
 static void send_file_name(struct rdma_cm_id *id)
@@ -150,15 +147,10 @@ int main(int argc, char **argv)
   {
     file_name = argv[2];
   }
-
-  ctx.file_name = basename(file_name.c_str());
-  ctx.fd = open(file_name.c_str(), O_RDONLY);
-
-  if (ctx.fd == -1)
-  {
-    fprintf(stderr, "unable to open input file \"%s\"\n", ctx.file_name);
-    return 1;
-  }
+  char* str = "testok";
+  buf_len = strlen(str);
+  buf2send = (char*) malloc(buf_len);
+  memcpy(buf, str, buf_len);
 
   rc_init(
     on_pre_conn,
