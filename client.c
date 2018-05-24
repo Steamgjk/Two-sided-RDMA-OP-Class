@@ -82,7 +82,6 @@ static void send_next_chunk(struct rdma_cm_id *id)
   memcpy(ctx->buffer, buf2send, ctx->buf_len);
   printf("send tchunk...\n");
   printf("buf= %s\n", ctx->buffer );
-  getchar();
   write_remote(id, ctx->buf_len);
   ctx->buf_prepared = false;
 }
