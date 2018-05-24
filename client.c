@@ -160,7 +160,6 @@ int main(int argc, char **argv)
 
   rc_client_loop(remote_ip.c_str(), DEFAULT_PORT, &ctx);
 
-  close(ctx.fd);
 
   return 0;
 }
