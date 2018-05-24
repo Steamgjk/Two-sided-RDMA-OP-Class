@@ -147,7 +147,7 @@ int main(int argc, char **argv)
     file_name = argv[2];
   }
   char* str = "testok";
-  buf_len = strlen(str);
+  ctx.buf_len = strlen(str);
   ctx.buffer = (char*) malloc(buf_len);
   memcpy(ctx.buffer, str, buf_len);
   ctx.buf_prepared = true;
