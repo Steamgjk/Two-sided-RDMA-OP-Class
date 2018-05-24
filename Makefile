@@ -8,13 +8,13 @@ APPS    := client server test_client
 all: ${APPS}
 
 test_client: common.o client_op.o test_client.o
-	${CC} -o $@ $^ ${LDLIBS}
+	${CC} $(CFLAGS) -o $@ $^ ${LDLIBS}
 
 client: common.o client.o
-	${CC} -o $@ $^ ${LDLIBS}
+	${CC} $(CFLAGS) -o $@ $^ ${LDLIBS}
 
 server: common.o server.o
-	${CC} -o $@ $^ ${LDLIBS}
+	${CC} $(CFLAGS) -o $@ $^ ${LDLIBS}
 
 clean:
 	rm -f *.o ${APPS}
