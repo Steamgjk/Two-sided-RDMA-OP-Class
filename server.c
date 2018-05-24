@@ -112,6 +112,7 @@ static void on_completion(struct ibv_wc *wc)
 
       ctx->msg->id = MSG_READY;
       send_message(id);
+      getchar();
 
     }
     /*
