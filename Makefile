@@ -1,6 +1,6 @@
 .PHONY: clean
 CC=g++
-CFLAGS  := -Wall -Werror -g -fpermissive -std=c++11
+CFLAGS  := -Wall -g -fpermissive -std=c++11
 LD      := g++
 LDLIBS  := ${LDLIBS} -lrdmacm -libverbs -lpthread
 APPS    := client server
