@@ -92,7 +92,9 @@ static void on_completion(struct ibv_wc *wc)
 
     if (size == 0)
     {
-      ctx->msg->id = MSG_DONE;
+      //ctx->msg->id = MSG_DONE;
+      ctx->msg->id = MSG_READY;
+      post_receive(id);
       send_message(id);
 
       // don't need post_receive() since we're done with this connection
@@ -105,12 +107,7 @@ static void on_completion(struct ibv_wc *wc)
 
       printf("received %i bytes.\n", size);
 
-      /*
-            ret = write(ctx->fd, ctx->buffer, size);
 
-            if (ret != size)
-              rc_die("write() failed");
-      **/
       printf("ctx->buffer=%s\n", ctx->buffer );
       post_receive(id);
 
