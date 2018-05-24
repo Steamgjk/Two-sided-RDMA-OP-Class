@@ -149,7 +149,7 @@ int main(int argc, char **argv)
   char* str = "testok";
   ctx.buf_len = strlen(str);
   ctx.buffer = (char*) malloc(ctx.buf_len);
-  memcpy(ctx.buffer, str, buf_len);
+  memcpy(ctx.buffer, str, ctx.buf_len);
   ctx.buf_prepared = true;
 
   rc_init(
