@@ -78,14 +78,7 @@ static void send_next_chunk(struct rdma_cm_id *id)
   write_remote(id, ctx->buf_len);
 }
 
-static void send_file_name(struct rdma_cm_id *id)
-{
-  struct client_context *ctx = (struct client_context *)id->context;
 
-  strcpy(ctx->buffer, ctx->file_name);
-
-  write_remote(id, strlen(ctx->file_name) + 1);
-}
 
 static void on_pre_conn(struct rdma_cm_id *id)
 {
