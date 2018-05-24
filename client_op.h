@@ -3,6 +3,7 @@
 #include <string>
 #include <thread>
 #include <unistd.h>
+#include <stdlib.h>
 #include "common.h"
 #include "messages.h"
 using namespace std;
