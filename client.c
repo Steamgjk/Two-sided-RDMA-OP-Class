@@ -148,7 +148,7 @@ int main(int argc, char **argv)
   }
   char* str = "testok";
   ctx.buf_len = strlen(str);
-  ctx.buffer = (char*) malloc(buf_len);
+  ctx.buffer = (char*) malloc(ctx.buf_len);
   memcpy(ctx.buffer, str, buf_len);
   ctx.buf_prepared = true;
 
