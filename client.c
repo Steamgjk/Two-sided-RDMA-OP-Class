@@ -101,7 +101,7 @@ static void on_completion(struct ibv_wc *wc)
 {
   struct rdma_cm_id *id = (struct rdma_cm_id *)(uintptr_t)(wc->wr_id);
   struct client_context *ctx = (struct client_context *)id->context;
-  printf("here in on_completion  ctx->buffer=%p  %p\n", ctx->buffer, ctx->buffer );
+  printf("here in on_completion  ctx->buffer=%p  %s\n", ctx->buffer, ctx->buffer );
   if (wc->opcode & IBV_WC_RECV)
   {
     if (ctx->msg->id == MSG_MR)
