@@ -31,7 +31,7 @@ public:
 	static void server_on_completion(struct ibv_wc *wc);
 
 	void server_event_loop(struct rdma_event_channel *ec, int exit_on_disconnect);
-	void rc_server_loop(const char *host, const char *port, void *context);
+	void rc_server_loop(const char *port);
 	void server_build_connection(struct rdma_cm_id *id);
 	void server_build_context(struct ibv_context *verbs);
 	void server_build_params(struct rdma_conn_param *params);
