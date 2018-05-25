@@ -27,6 +27,8 @@
 #include <fstream>
 #include <sys/time.h>
 #include <map>
+#include <netdb.h>
+#include <rdma/rdma_cma.h>
 #include "messages.h"
 using namespace std;
 #define TEST_NZ(x) do { if ( (x)) rc_die("error: " #x " failed (returned non-zero)." ); } while (0)
