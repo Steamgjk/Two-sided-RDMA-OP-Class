@@ -46,7 +46,7 @@ void RdmaTwoSidedServerOp::server_post_receive(struct rdma_cm_id *id)
   TEST_NZ(ibv_post_recv(id->qp, &wr, &bad_wr));
 }
 
-void RdmaTwoSidedServerOp::void server_on_pre_conn(struct rdma_cm_id *id, struct ibv_pd *pd, struct conn_context* ctx);
+void RdmaTwoSidedServerOp::server_on_pre_conn(struct rdma_cm_id *id, struct ibv_pd *pd, struct conn_context* ctx);
 {
   //struct conn_context *ctx = (struct conn_context *)malloc(sizeof(struct conn_context));
 
