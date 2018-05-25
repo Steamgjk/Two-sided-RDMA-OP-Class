@@ -165,12 +165,14 @@ void client_event_loop(struct rdma_event_channel *ec, int exit_on_disconnect)
     printf("check 4\n");
     if (event_copy.event == RDMA_CM_EVENT_ADDR_RESOLVED)
     {
+      printf("check 5\n");
       client_build_connection(event_copy.id);
       /*
             if (s_on_pre_conn_cb)
               s_on_pre_conn_cb(event_copy.id);
       **/
       client_on_pre_conn(event_copy.id);
+      printf("check 6\n");
       TEST_NZ(rdma_resolve_route(event_copy.id, TIMEOUT_IN_MS));
     }
     else if (event_copy.event == RDMA_CM_EVENT_ROUTE_RESOLVED)
@@ -179,13 +181,15 @@ void client_event_loop(struct rdma_event_channel *ec, int exit_on_disconnect)
     }
     else if (event_copy.event == RDMA_CM_EVENT_CONNECT_REQUEST)
     {
+      printf("check 7\n");
       client_build_connection(event_copy.id);
-
+      printf("check 9\n");
       client_on_pre_conn(event_copy.id);
       /*
       if (s_on_pre_conn_cb)
         s_on_pre_conn_cb(event_copy.id);
       **/
+      printf("check 8\n");
       TEST_NZ(rdma_accept(event_copy.id, &cm_params));
 
     }
