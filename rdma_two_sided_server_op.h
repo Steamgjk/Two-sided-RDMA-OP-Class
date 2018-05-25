@@ -25,10 +25,10 @@ public:
 	~RdmaTwoSidedServerOp();
 
 	static void server_post_receive(struct rdma_cm_id *id);
-
 	static void server_on_pre_conn(struct rdma_cm_id *id, struct ibv_pd *pd);
-
 	static void server_on_completion(struct ibv_wc *wc);
+	static void server_on_connection(struct rdma_cm_id *id);
+	static void server_on_disconnect(struct rdma_cm_id *id);
 
 	void server_event_loop(struct rdma_event_channel *ec, int exit_on_disconnect);
 	void rc_server_loop(const char *port);
