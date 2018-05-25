@@ -58,10 +58,10 @@ void run(int thread_id)
 	RdmaTwoSidedClientOp ct;
 	if (thread_id == 1)
 	{
-		ct.rc_client_loop("12.12.10.16", 44411, &ctx);
+		ct.rc_client_loop("12.12.10.16", "44411", &ctx);
 	}
 	else
 	{
-		ct.rc_client_loop("12.12.10.16", 44412, &ctx2);
+		ct.rc_client_loop("12.12.10.16", "44412", &ctx2);
 	}
 }
