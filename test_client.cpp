@@ -38,6 +38,7 @@ int main(int argc, char **argv)
 		char str[100];
 		memset(str, '\0', 100);
 		sprintf(str, "iamok-%d", cnt);
+		ctx.buf_len = 100;
 		memcpy(ctx.buffer, str, 100);
 		ctx.buf_prepared = true;
 		cnt++;
