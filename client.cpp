@@ -80,20 +80,18 @@ void client::client_send_next_chunk(struct rdma_cm_id *id)
 
 
 
-void client::client_on_pre_conn(struct rdma_cm_id *id)
+void client::client_on_pre_conn(struct rdma_cm_id *id, struct ibv_pd *pd)
 {
   struct client_context *ctx = (struct client_context *)id->context;
   posix_memalign((void **)&ctx->buffer, sysconf(_SC_PAGESIZE), BUFFER_SIZE);
 
-  //TEST_Z(ctx->buffer_mr = ibv_reg_mr(rc_get_pd(), ctx->buffer, BUFFER_SIZE, IBV_ACCESS_LOCAL_WRITE));
-
-  TEST_Z(ctx->buffer_mr = ibv_reg_mr((s_ctx->pd), ctx->buffer, BUFFER_SIZE, IBV_ACCESS_LOCAL_WRITE));
+//s_ctx->pd
+  TEST_Z(ctx->buffer_mr = ibv_reg_mr((pd), ctx->buffer, BUFFER_SIZE, IBV_ACCESS_LOCAL_WRITE));
 
   posix_memalign((void **)&ctx->msg, sysconf(_SC_PAGESIZE), sizeof(*ctx->msg));
 
-  //TEST_Z(ctx->msg_mr = ibv_reg_mr(rc_get_pd(), ctx->msg, sizeof(*ctx->msg), IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_WRITE));
 
-  TEST_Z(ctx->msg_mr = ibv_reg_mr((s_ctx->pd), ctx->msg, sizeof(*ctx->msg), IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_WRITE));
+  TEST_Z(ctx->msg_mr = ibv_reg_mr((pd), ctx->msg, sizeof(*ctx->msg), IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_WRITE));
 
   ctx->buf_registered = true;
   client_post_receive(id);
@@ -181,7 +179,7 @@ void client::client_event_loop(struct rdma_event_channel *ec, int exit_on_discon
       client_build_connection(event_copy.id);
 
       printf("check 5.5\n");
-      client_on_pre_conn(event_copy.id);
+      client_on_pre_conn(event_copy.id, s_ctx->pd);
       printf("check 6\n");
       TEST_NZ(rdma_resolve_route(event_copy.id, TIMEOUT_IN_MS));
 
@@ -196,7 +194,7 @@ void client::client_event_loop(struct rdma_event_channel *ec, int exit_on_discon
       printf("check 7\n");
       client_build_connection(event_copy.id);
       printf("check 9\n");
-      client_on_pre_conn(event_copy.id);
+      client_on_pre_conn(event_copy.id, s_ctx->pd);
 
       printf("check 8\n");
       TEST_NZ(rdma_accept(event_copy.id, &cm_params));
