@@ -83,7 +83,7 @@ public:
 	void build_params(struct rdma_conn_param *params);
 	void build_qp_attr(struct ibv_qp_init_attr *qp_attr);
 	void event_loop(struct rdma_event_channel *ec, int exit_on_disconnect);
-	void* poll_cq(void *ctx);
+	static void* poll_cq(void *ctx);
 	void rc_init(pre_conn_cb_fn pc, connect_cb_fn conn, completion_cb_fn comp, disconnect_cb_fn disc);
 	void rc_client_loop(const char *host, const char *port, void *context);
 	void rc_server_loop(const char *port);
