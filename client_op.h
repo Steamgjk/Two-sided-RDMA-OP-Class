@@ -48,18 +48,18 @@ class client_op
 public:
 	client_op();
 	client_op(string lip, string rip, int rport);
-	static void write_remote(struct rdma_cm_id *id, uint32_t len);
-	static void post_receive(struct rdma_cm_id *id);
-	static void send_next_chunk(struct rdma_cm_id *id);
-	static void on_pre_conn(struct rdma_cm_id *id);
-	static void on_completion(struct ibv_wc *wc);
-	static void prepare_data(char* buf2send, size_t buf2send_len);
-	static void run();
+	void write_remote(struct rdma_cm_id *id, uint32_t len);
+	void post_receive(struct rdma_cm_id *id);
+	void send_next_chunk(struct rdma_cm_id *id);
+	void on_pre_conn(struct rdma_cm_id *id);
+	void on_completion(struct ibv_wc *wc);
+	void prepare_data(char* buf2send, size_t buf2send_len);
+	void run();
 	~client_op();
 private:
-	static string local_ip;
-	static string remote_ip;
-	static int remote_port;
-	static struct client_context ctx;
+	string local_ip;
+	string remote_ip;
+	int remote_port;
+	struct client_context ctx;
 
 };
