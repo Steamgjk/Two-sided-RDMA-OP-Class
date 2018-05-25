@@ -5,9 +5,9 @@ client_op::client_op()
 }
 client_op::client_op(string lip, string rip, int rport)
 {
-	this->remote_ip = rip;
-	this->remote_port = rport;
-	this->local_ip = lip;
+	remote_ip = rip;
+	remote_port = rport;
+	local_ip = lip;
 
 }
 client_op::~client_op()
