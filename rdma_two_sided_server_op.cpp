@@ -133,7 +133,7 @@ void RdmaTwoSidedServerOp::server_on_disconnect(struct rdma_cm_id *id)
 
   printf("finished transferring\n");
 
-  free(ctx);
+  //free(ctx);
 }
 
 
