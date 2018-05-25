@@ -166,7 +166,7 @@ void RdmaTwoSidedServerOp::server_event_loop(struct rdma_event_channel *ec, int 
     {
       server_build_connection(event_copy.id);
 
-      server_on_pre_conn(event_copy.id);
+      server_on_pre_conn(event_copy.id, s_ctx->pd);
 
 
       TEST_NZ(rdma_resolve_route(event_copy.id, TIMEOUT_IN_MS));
@@ -181,7 +181,7 @@ void RdmaTwoSidedServerOp::server_event_loop(struct rdma_event_channel *ec, int 
     {
       server_build_connection(event_copy.id);
 
-      server_on_pre_conn(event_copy.id);
+      server_on_pre_conn(event_copy.id, s_ctx->pd);
 
       TEST_NZ(rdma_accept(event_copy.id, &cm_params));
 
