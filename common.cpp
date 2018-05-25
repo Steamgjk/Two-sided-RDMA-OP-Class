@@ -197,5 +197,6 @@ void rc_die(const char *reason)
 
 struct ibv_pd * rc_get_pd()
 {
+  printf("He return this one\n");
   return s_ctx->pd;
 }
