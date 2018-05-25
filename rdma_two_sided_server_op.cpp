@@ -46,9 +46,9 @@ void RdmaTwoSidedServerOp::server_post_receive(struct rdma_cm_id *id)
   TEST_NZ(ibv_post_recv(id->qp, &wr, &bad_wr));
 }
 
-void RdmaTwoSidedServerOp::server_on_pre_conn(struct rdma_cm_id *id,  struct ibv_pd *pd)
+void RdmaTwoSidedServerOp::void server_on_pre_conn(struct rdma_cm_id *id, struct ibv_pd *pd, struct conn_context* ctx);
 {
-  struct conn_context *ctx = (struct conn_context *)malloc(sizeof(struct conn_context));
+  //struct conn_context *ctx = (struct conn_context *)malloc(sizeof(struct conn_context));
 
   id->context = ctx;
 
@@ -87,6 +87,13 @@ void RdmaTwoSidedServerOp::server_on_completion(struct ibv_wc *wc)
       //ctx->msg->id = MSG_DONE;
       ctx->msg->id = MSG_READY;
       server_post_receive(id);
+      ctx->buf_prepared = true;
+      ctx->buf_len = size;
+      while (ctx->buf_prepared == true)
+      {
+
+      }
+
       server_send_message(id);
     }
     else
@@ -97,6 +104,13 @@ void RdmaTwoSidedServerOp::server_on_completion(struct ibv_wc *wc)
 
       printf("ctx->buffer=%p  %s\n", ctx->buffer, ctx->buffer );
       server_post_receive(id);
+
+      ctx->buf_prepared = true;
+      ctx->buf_len = size;
+      while (ctx->buf_prepared == true)
+      {
+
+      }
 
       ctx->msg->id = MSG_READY;
       server_send_message(id);

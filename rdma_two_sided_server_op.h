@@ -11,6 +11,10 @@ using namespace std;
 struct conn_context
 {
 	char *buffer;
+	size_t buf_len;
+	bool buf_prepared;
+	bool buf_registered;
+
 	struct ibv_mr *buffer_mr;
 
 	struct message *msg;
@@ -24,7 +28,7 @@ public:
 	~RdmaTwoSidedServerOp();
 
 	static void server_post_receive(struct rdma_cm_id *id);
-	static void server_on_pre_conn(struct rdma_cm_id *id, struct ibv_pd *pd);
+	static void server_on_pre_conn(struct rdma_cm_id *id, struct ibv_pd *pd, struct conn_context* ctx);
 	static void server_on_completion(struct ibv_wc *wc);
 	static void server_on_connection(struct rdma_cm_id *id);
 	static void server_on_disconnect(struct rdma_cm_id *id);
