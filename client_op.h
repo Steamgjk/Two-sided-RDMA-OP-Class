@@ -31,6 +31,8 @@
 #include <rdma/rdma_cma.h>
 #include "messages.h"
 using namespace std;
+const int TIMEOUT_IN_MS = 500;
+
 #define TEST_NZ(x) do { if ( (x)) rc_die("error: " #x " failed (returned non-zero)." ); } while (0)
 #define TEST_Z(x)  do { if (!(x)) rc_die("error: " #x " failed (returned zero/null)."); } while (0)
 
