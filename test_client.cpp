@@ -20,7 +20,7 @@ int main(int argc, char **argv)
 	std::thread recv_thread(run, 1);
 	recv_thread.detach();
 	std::thread recv_thread2(run, 2);
-	recv_thread.detach();
+	recv_thread2.detach();
 	int cnt = 0;
 	while (1 == 1)
 	{
