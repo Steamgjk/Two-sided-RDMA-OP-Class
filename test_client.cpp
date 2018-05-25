@@ -1,26 +1,39 @@
-#include "client_op.h"
+#include "client.h"
+#include <string>
 #include <thread>
 using namespace std;
-client_op*c_op = NULL;
-void rdma_sendTd(int send_thread);
-int main()
+struct client_context ctx;
+string remote_ip = "12.12.10.16";
+void run(int thread_id);
+int main(int argc, char **argv)
 {
-	c_op = new client_op("12.12.10.16", 12345, "12.12.10.18");
-	int thid = 1;
-	std::thread send_thread(rdma_sendTd, thid);
-	send_thread.detach();
-	while (1 == 1)
+
+	if (argc >= 2)
 	{
-		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-		char* str = "Iamok";
-		size_t len = strlen(str);
-		c_op->prepare_data(str, len);
-		printf("prepared!\n");
+		remote_ip = argv[1];
 	}
 
+	ctx.buf_prepared = true;
+	rc_init(
+	    on_pre_conn,
+	    NULL, // on connect
+	    on_completion,
+	    NULL); // on disconnect
 
+	int thread_id = 1;
+	std::thread recv_thread(run, thread_id);
+	recv_thread.detach();
+	while (1 == 1)
+	{
+		printf("main thread\n");
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+		//ctx.buf_prepared = true;
+	}
+
+	return 0;
 }
-void rdma_sendTd(int send_thread)
+void run(int thread_id)
 {
-	c_op->run();
+	printf("thread_id=%d\n", thread_id);
+	rc_client_loop(remote_ip.c_str(), DEFAULT_PORT, &ctx);
 }
