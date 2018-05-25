@@ -83,7 +83,10 @@ void event_loop(struct rdma_event_channel *ec, int exit_on_disconnect)
       build_connection(event_copy.id);
 
       if (s_on_pre_conn_cb)
+      {
+        printf("comer ok\n");
         s_on_pre_conn_cb(event_copy.id);
+      }
 
       TEST_NZ(rdma_resolve_route(event_copy.id, TIMEOUT_IN_MS));
 
