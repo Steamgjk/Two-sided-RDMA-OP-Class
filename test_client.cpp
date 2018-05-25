@@ -2,7 +2,7 @@
 #include <string>
 #include <thread>
 using namespace std;
-struct client_context ctx;
+struct client_context ctx, ctx2;
 string remote_ip = "12.12.10.16";
 void run(int thread_id);
 int main(int argc, char **argv)
@@ -17,7 +17,9 @@ int main(int argc, char **argv)
 	ctx.buf_registered = false;
 
 	int thread_id = 1;
-	std::thread recv_thread(run, thread_id);
+	std::thread recv_thread(run, 1);
+	recv_thread.detach();
+	std::thread recv_thread2(run, 2);
 	recv_thread.detach();
 	int cnt = 0;
 	while (1 == 1)
@@ -42,7 +44,12 @@ int main(int argc, char **argv)
 }
 void run(int thread_id)
 {
-	printf("thread_id=%d  ctx_ptr=%p\n", thread_id, &ctx);
+	printf("thread_id=%d  ctx_ptr=%p  ctx2=%p\n", thread_id, &ctx, &ctx2);
 	client ct;
-	ct.rc_client_loop(remote_ip.c_str(), DEFAULT_PORT, &ctx);
+	if (thread_id == 1)
+		ct.rc_client_loop("12.12.10.16", DEFAULT_PORT, &ctx);
+	else
+	{
+		ct.rc_client_loop("12.12.10.17", DEFAULT_PORT, &ctx2);
+	}
 }
