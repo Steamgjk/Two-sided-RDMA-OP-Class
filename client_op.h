@@ -88,7 +88,7 @@ public:
 	void rc_client_loop(const char *host, const char *port, void *context);
 	void rc_server_loop(const char *port);
 	void rc_disconnect(struct rdma_cm_id *id);
-	void rc_die(const char *reason);
+	static void rc_die(const char *reason);
 	struct ibv_pd* rc_get_pd();
 
 	~client_op();
