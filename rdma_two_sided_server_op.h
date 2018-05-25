@@ -35,7 +35,7 @@ public:
 	static void server_send_message(struct rdma_cm_id *id);
 
 	void server_event_loop(struct rdma_event_channel *ec, int exit_on_disconnect, struct conn_context* ctx );
-	void rc_server_loop(const char *port);
+	void rc_server_loop(const char *port, struct conn_context* ctx );
 	void server_build_connection(struct rdma_cm_id *id);
 	void server_build_context(struct ibv_context *verbs);
 	void server_build_params(struct rdma_conn_param *params);
