@@ -82,7 +82,7 @@ void client_on_pre_conn(struct rdma_cm_id *id)
   posix_memalign((void **)&ctx->msg, sysconf(_SC_PAGESIZE), sizeof(*ctx->msg));
   TEST_Z(ctx->msg_mr = ibv_reg_mr(rc_get_pd(), ctx->msg, sizeof(*ctx->msg), IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_WRITE));
 
-
+  printf("can comehere\n");
   ctx->buf_registered = true;
   printf("ok registered  ptr=%p\n", ctx );
   client_post_receive(id);
@@ -142,7 +142,8 @@ void rc_client_loop(const char *host, const char *port, void *context)
   printf("check1\n");
   client_build_params(&cm_params);
   printf("check2\n");
-  event_loop(ec, 1); // exit on disconnect
+
+  client_event_loop(ec, 1); // exit on disconnect
 
   rdma_destroy_event_channel(ec);
 }
@@ -171,6 +172,7 @@ void client_event_loop(struct rdma_event_channel *ec, int exit_on_disconnect)
             if (s_on_pre_conn_cb)
               s_on_pre_conn_cb(event_copy.id);
       **/
+      printf("check 5.5\n");
       client_on_pre_conn(event_copy.id);
       printf("check 6\n");
       TEST_NZ(rdma_resolve_route(event_copy.id, TIMEOUT_IN_MS));
