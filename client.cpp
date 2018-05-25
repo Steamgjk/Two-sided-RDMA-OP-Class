@@ -88,9 +88,7 @@ void client_on_pre_conn(struct rdma_cm_id *id)
 
   TEST_Z(ctx->msg_mr = ibv_reg_mr((s_ctx->pd), ctx->msg, sizeof(*ctx->msg), IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_WRITE));
 
-  printf("can comehere\n");
   ctx->buf_registered = true;
-  printf("ok registered  ptr=%p\n", ctx );
   client_post_receive(id);
 }
 
