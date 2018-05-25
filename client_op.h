@@ -27,9 +27,18 @@
 #include <fstream>
 #include <sys/time.h>
 #include <map>
-#include "common.h"
 #include "messages.h"
 using namespace std;
+struct context
+{
+	struct ibv_context *ctx;
+	struct ibv_pd *pd;
+	struct ibv_cq *cq;
+	struct ibv_comp_channel *comp_channel;
+
+	pthread_t cq_poller_thread;
+};
+
 struct client_context
 {
 	char *buffer;
@@ -55,11 +64,32 @@ public:
 	void on_completion(struct ibv_wc *wc);
 	void prepare_data(char* buf2send, size_t buf2send_len);
 	void run();
+
+
+	void build_connection(struct rdma_cm_id *id);
+	void build_context(struct ibv_context *verbs);
+	void build_params(struct rdma_conn_param *params);
+	void build_qp_attr(struct ibv_qp_init_attr *qp_attr);
+	void event_loop(struct rdma_event_channel *ec, int exit_on_disconnect);
+	void* poll_cq(void *ctx);
+	void rc_init(pre_conn_cb_fn pc, connect_cb_fn conn, completion_cb_fn comp, disconnect_cb_fn disc);
+	void rc_client_loop(const char *host, const char *port, void *context);
+	void rc_server_loop(const char *port);
+	void rc_disconnect(struct rdma_cm_id *id);
+	void rc_die(const char *reason);
+	struct ibv_pd* rc_get_pd();
+
 	~client_op();
 private:
 	string local_ip;
 	string remote_ip;
 	int remote_port;
 	struct client_context ctx;
+
+	struct context *s_ctx = NULL;
+	pre_conn_cb_fn s_on_pre_conn_cb = NULL;
+	connect_cb_fn s_on_connect_cb = NULL;
+	completion_cb_fn s_on_completion_cb = NULL;
+	disconnect_cb_fn s_on_disconnect_cb = NULL;
 
 };
