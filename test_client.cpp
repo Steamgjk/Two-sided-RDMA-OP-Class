@@ -13,7 +13,9 @@ int main(int argc, char **argv)
 		remote_ip = argv[1];
 	}
 
-	ctx.buf_prepared = true;
+	ctx.buf_prepared = false;
+	ctx.buf_registered = false;
+
 	rc_init(
 	    on_pre_conn,
 	    NULL, // on connect
@@ -28,6 +30,10 @@ int main(int argc, char **argv)
 	{
 		printf("main thread\n");
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+		if (ctx.buf_registered == false)
+		{
+			continue;
+		}
 		char str[100];
 		memset(str, '\0', 100);
 		sprintf(str, "iamok-%d", cnt);

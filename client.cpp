@@ -59,11 +59,13 @@ void send_next_chunk(struct rdma_cm_id *id)
   {
     std::this_thread::sleep_for(std::chrono::milliseconds(30));
   }
+  /*
   char*str = "iamok";
   ctx->buf_len = strlen(str);
   memcpy(ctx->buffer, str, ctx->buf_len);
   printf("send tchunk...\n");
   printf("buf= %s\n", ctx->buffer );
+  **/
   write_remote(id, ctx->buf_len);
   ctx->buf_prepared = false;
 }
@@ -79,6 +81,7 @@ void on_pre_conn(struct rdma_cm_id *id)
   posix_memalign((void **)&ctx->msg, sysconf(_SC_PAGESIZE), sizeof(*ctx->msg));
   TEST_Z(ctx->msg_mr = ibv_reg_mr(rc_get_pd(), ctx->msg, sizeof(*ctx->msg), IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_WRITE));
 
+  ctx->buf_registered = true;
   post_receive(id);
 }
 
