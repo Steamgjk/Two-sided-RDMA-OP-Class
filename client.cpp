@@ -179,10 +179,7 @@ void client::client_event_loop(struct rdma_event_channel *ec, int exit_on_discon
     {
       printf("check 5\n");
       client_build_connection(event_copy.id);
-      /*
-            if (s_on_pre_conn_cb)
-              s_on_pre_conn_cb(event_copy.id);
-      **/
+
       printf("check 5.5\n");
       client_on_pre_conn(event_copy.id);
       printf("check 6\n");
@@ -202,10 +199,7 @@ void client::client_event_loop(struct rdma_event_channel *ec, int exit_on_discon
       client_build_connection(event_copy.id);
       printf("check 9\n");
       client_on_pre_conn(event_copy.id);
-      /*
-      if (s_on_pre_conn_cb)
-        s_on_pre_conn_cb(event_copy.id);
-      **/
+
       printf("check 8\n");
       TEST_NZ(rdma_accept(event_copy.id, &cm_params));
 
@@ -268,6 +262,7 @@ void client::client_build_context(struct ibv_context *verbs)
   /* cqe=10 is arbitrary */
   TEST_NZ(ibv_req_notify_cq(s_ctx->cq, 0));
 
+  client_poll_cq(NULL);
   //TEST_NZ(pthread_create(&s_ctx->cq_poller_thread, NULL, client_poll_cq, NULL));
 }
 
