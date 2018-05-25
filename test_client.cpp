@@ -32,6 +32,7 @@ int main(int argc, char **argv)
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 		if (ctx.buf_registered == false)
 		{
+			printf("register = false\n");
 			continue;
 		}
 		char str[100];
@@ -46,6 +47,6 @@ int main(int argc, char **argv)
 }
 void run(int thread_id)
 {
-	printf("thread_id=%d\n", thread_id);
+	printf("thread_id=%d  ctx_ptr=%p\n", thread_id, &ctx);
 	rc_client_loop(remote_ip.c_str(), DEFAULT_PORT, &ctx);
 }
