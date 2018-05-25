@@ -5,7 +5,7 @@ client_op*c_op = NULL;
 void rdma_sendTd(int send_thread);
 int main()
 {
-	c_op = new client_op("12.12.10.18", "12.12.10.16", 12345);
+	c_op = new client_op("12.12.10.16", 12345, "12.12.10.18");
 	int thid = 1;
 	std::thread send_thread(rdma_sendTd, thid);
 	send_thread.detach();

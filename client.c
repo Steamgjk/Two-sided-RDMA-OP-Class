@@ -145,8 +145,6 @@ int main(int argc, char **argv)
   {
     file_name = argv[2];
   }
-  buf2send = "test-ok";
-  buf2send_len = strlen(buf2send);
   ctx.buf_prepared = true;
   rc_init(
     on_pre_conn,

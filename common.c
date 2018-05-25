@@ -23,7 +23,6 @@ static void build_qp_attr(struct ibv_qp_init_attr *qp_attr);
 static void event_loop(struct rdma_event_channel *ec, int exit_on_disconnect);
 static void * poll_cq(void *);
 
-
 void build_connection(struct rdma_cm_id *id)
 {
   struct ibv_qp_init_attr qp_attr;
