@@ -70,7 +70,7 @@ void RdmaTwoSidedServerOp::server_on_connection(struct rdma_cm_id *id)
   ctx->msg->data.mr.addr = (uintptr_t)ctx->buffer_mr->addr;
   ctx->msg->data.mr.rkey = ctx->buffer_mr->rkey;
 
-  send_message(id);
+  server_send_message(id);
 }
 
 void RdmaTwoSidedServerOp::server_on_completion(struct ibv_wc *wc)
