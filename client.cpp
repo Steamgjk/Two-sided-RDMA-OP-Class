@@ -112,12 +112,12 @@ void client::client_on_completion(struct ibv_wc *wc)
 
       printf("received MR, sending file name(obsolete), send chunk\n");
       //send_file_name(id);
-      client_send_next_chunk(id);
+      //client_send_next_chunk(id);
     }
     else if (ctx->msg->id == MSG_READY)
     {
       printf("received READY, sending chunk\n");
-      client_send_next_chunk(id);
+      //client_send_next_chunk(id);
     }
     else if (ctx->msg->id == MSG_DONE)
     {
@@ -185,9 +185,7 @@ void client::client_event_loop(struct rdma_event_channel *ec, int exit_on_discon
       printf("check 6\n");
       TEST_NZ(rdma_resolve_route(event_copy.id, TIMEOUT_IN_MS));
 
-      printf("ok here poll cq\n");
-      //
-      client_poll_cq(NULL);
+
     }
     else if (event_copy.event == RDMA_CM_EVENT_ROUTE_RESOLVED)
     {
@@ -258,12 +256,13 @@ void client::client_build_context(struct ibv_context *verbs)
 
   TEST_Z(s_ctx->pd = ibv_alloc_pd(s_ctx->ctx));
   TEST_Z(s_ctx->comp_channel = ibv_create_comp_channel(s_ctx->ctx));
-  TEST_Z(s_ctx->cq = ibv_create_cq(s_ctx->ctx, 10, NULL, s_ctx->comp_channel, 0));
+  TEST_Z(s_ctx->cq = ibv_create_cq(s_ctx->ctx, 10, NULL, (s_ctx->comp_channel), 0));
   /* cqe=10 is arbitrary */
   TEST_NZ(ibv_req_notify_cq(s_ctx->cq, 0));
 
-  client_poll_cq(NULL);
-  //TEST_NZ(pthread_create(&s_ctx->cq_poller_thread, NULL, client_poll_cq, NULL));
+  //client_poll_cq(NULL);
+  TEST_NZ(pthread_create(&s_ctx->cq_poller_thread, NULL, client_poll_cq, (s_ctx->comp_channel) ));
+
 }
 
 void client::client_build_params(struct rdma_conn_param *params)
@@ -289,14 +288,16 @@ void client::client_build_qp_attr(struct ibv_qp_init_attr *qp_attr)
 }
 
 
-void * client::client_poll_cq(void *ctx)
+void * client::client_poll_cq(void* void_ch)
 {
   struct ibv_cq *cq;
   struct ibv_wc wc;
-
+  struct ibv_comp_channel *channel = void_ch;
+  void *ctx;
   while (1)
   {
-    TEST_NZ(ibv_get_cq_event(s_ctx->comp_channel, &cq, &ctx));
+    //TEST_NZ(ibv_get_cq_event(s_ctx->comp_channel, &cq, &ctx));
+    TEST_NZ(ibv_get_cq_event(channel, &cq, &ctx));
     ibv_ack_cq_events(cq, 1);
     TEST_NZ(ibv_req_notify_cq(cq, 0));
 

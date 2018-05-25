@@ -31,7 +31,7 @@ public:
 	~client();
 
 	void client_write_remote(struct rdma_cm_id *id, uint32_t len);
-	void client_post_receive(struct rdma_cm_id *id);
+	static void client_post_receive(struct rdma_cm_id *id);
 	void client_send_next_chunk(struct rdma_cm_id *id);
 	void client_on_pre_conn(struct rdma_cm_id *id);
 	void client_on_completion(struct ibv_wc *wc);
@@ -42,8 +42,9 @@ public:
 	void client_build_context(struct ibv_context *verbs);
 	void client_build_params(struct rdma_conn_param *params);
 	void client_build_qp_attr(struct ibv_qp_init_attr *qp_attr);
-	void * client_poll_cq(void *ctx);
-
+	//static void * client_poll_cq(void *ctx);
+	//static void * client::client_poll_cq(struct ibv_comp_channel *channel);
+	static void * client::client_poll_cq(void* void_channel);
 private:
 	struct context *s_ctx = NULL;
 
