@@ -227,8 +227,9 @@ void client_build_connection(struct rdma_cm_id *id)
   struct ibv_qp_init_attr qp_attr;
   client_build_context(id->verbs);
   client_build_qp_attr(&qp_attr);
-
+  printf("check 00\n");
   TEST_NZ(rdma_create_qp(id, s_ctx->pd, &qp_attr));
+  printf("check 01\n");
 }
 
 void client_build_context(struct ibv_context *verbs)
