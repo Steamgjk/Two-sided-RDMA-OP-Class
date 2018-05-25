@@ -101,12 +101,12 @@ void client_on_completion(struct ibv_wc *wc)
 
       printf("received MR, sending file name(obsolete), send chunk\n");
       //send_file_name(id);
-      send_next_chunk(id);
+      client_send_next_chunk(id);
     }
     else if (ctx->msg->id == MSG_READY)
     {
       printf("received READY, sending chunk\n");
-      send_next_chunk(id);
+      client_send_next_chunk(id);
     }
     else if (ctx->msg->id == MSG_DONE)
     {
@@ -115,7 +115,7 @@ void client_on_completion(struct ibv_wc *wc)
       return;
     }
 
-    post_receive(id);
+    client_post_receive(id);
   }
 }
 
