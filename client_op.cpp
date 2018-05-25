@@ -130,7 +130,7 @@ void client_op::run()
 	    on_completion,
 	    NULL); // on disconnect
 	char rport[30];
-	itoa(remote_port, rport, 10);
+	//itoa(remote_port, rport, 10);
 	snprintf(rport, 30, "%d", remote_port);
 	printf("rport=%s\n", rport );
 	rc_client_loop(remote_ip.c_str(), rport, &ctx);
