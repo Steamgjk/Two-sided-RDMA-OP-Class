@@ -169,14 +169,11 @@ void client_event_loop(struct rdma_event_channel *ec, int exit_on_disconnect)
               s_on_pre_conn_cb(event_copy.id);
       **/
       client_on_pre_conn(event_copy.id);
-
       TEST_NZ(rdma_resolve_route(event_copy.id, TIMEOUT_IN_MS));
-
     }
     else if (event_copy.event == RDMA_CM_EVENT_ROUTE_RESOLVED)
     {
       TEST_NZ(rdma_connect(event_copy.id, &cm_params));
-
     }
     else if (event_copy.event == RDMA_CM_EVENT_CONNECT_REQUEST)
     {
@@ -196,13 +193,10 @@ void client_event_loop(struct rdma_event_channel *ec, int exit_on_disconnect)
       if (s_on_connect_cb)
         s_on_connect_cb(event_copy.id);
         **/
-
-
     }
     else if (event_copy.event == RDMA_CM_EVENT_DISCONNECTED)
     {
       rdma_destroy_qp(event_copy.id);
-
       /*
       if (s_on_disconnect_cb)
         s_on_disconnect_cb(event_copy.id);
