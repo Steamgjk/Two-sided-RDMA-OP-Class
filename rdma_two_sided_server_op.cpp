@@ -162,7 +162,7 @@ void RdmaTwoSidedServerOp::rc_server_loop(const char *port)
 
 
 
-void RdmaTwoSidedServerOp::server_event_loop(struct rdma_event_channel *ec, int exit_on_disconnect)
+void RdmaTwoSidedServerOp::server_event_loop(struct rdma_event_channel *ec, int exit_on_disconnect, struct conn_context* ctx)
 {
   struct rdma_cm_event *event = NULL;
   struct rdma_conn_param cm_params;
@@ -180,7 +180,7 @@ void RdmaTwoSidedServerOp::server_event_loop(struct rdma_event_channel *ec, int 
     {
       server_build_connection(event_copy.id);
 
-      server_on_pre_conn(event_copy.id, s_ctx->pd);
+      server_on_pre_conn(event_copy.id, s_ctx->pd, ctx);
 
 
       TEST_NZ(rdma_resolve_route(event_copy.id, TIMEOUT_IN_MS));
@@ -195,7 +195,7 @@ void RdmaTwoSidedServerOp::server_event_loop(struct rdma_event_channel *ec, int 
     {
       server_build_connection(event_copy.id);
 
-      server_on_pre_conn(event_copy.id, s_ctx->pd);
+      server_on_pre_conn(event_copy.id, s_ctx->pd, ctx);
 
       TEST_NZ(rdma_accept(event_copy.id, &cm_params));
 
