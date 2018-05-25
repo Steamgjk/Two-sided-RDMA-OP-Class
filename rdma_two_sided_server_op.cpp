@@ -195,7 +195,7 @@ void RdmaTwoSidedServerOp::server_event_loop(struct rdma_event_channel *ec, int 
     {
       rdma_destroy_qp(event_copy.id);
 
-      server_on_connection(event_copy.id);
+      server_on_disconnect(event_copy.id);
 
       rdma_destroy_id(event_copy.id);
 
