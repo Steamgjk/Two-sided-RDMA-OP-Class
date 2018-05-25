@@ -123,6 +123,7 @@ void client_on_completion(struct ibv_wc *wc)
 
 void rc_client_loop(const char *host, const char *port, void *context)
 {
+  printf("enter rc_client_loop\n");
   struct addrinfo *addr;
   struct rdma_cm_id *conn = NULL;
   struct rdma_event_channel *ec = NULL;
@@ -138,8 +139,9 @@ void rc_client_loop(const char *host, const char *port, void *context)
 
   conn->context = context;
 
+  printf("check1\n");
   client_build_params(&cm_params);
-
+  printf("check2\n");
   client_event_loop(ec, 1); // exit on disconnect
 
   rdma_destroy_event_channel(ec);
@@ -153,14 +155,14 @@ void client_event_loop(struct rdma_event_channel *ec, int exit_on_disconnect)
   struct rdma_conn_param cm_params;
 
   client_build_params(&cm_params);
-
+  printf("check 3\n");
   while (rdma_get_cm_event(ec, &event) == 0)
   {
     struct rdma_cm_event event_copy;
 
     memcpy(&event_copy, event, sizeof(*event));
     rdma_ack_cm_event(event);
-
+    printf("check 4\n");
     if (event_copy.event == RDMA_CM_EVENT_ADDR_RESOLVED)
     {
       client_build_connection(event_copy.id);
