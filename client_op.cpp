@@ -289,10 +289,13 @@ void * client_op::poll_cq(void *ctx)
 
 void client_op::rc_init(pre_conn_cb_fn pc, connect_cb_fn conn, completion_cb_fn comp, disconnect_cb_fn disc)
 {
+	/*
 	s_on_pre_conn_cb = pc;
 	s_on_connect_cb = conn;
 	s_on_completion_cb = comp;
 	s_on_disconnect_cb = disc;
+	**/
+
 }
 
 void client_op::rc_client_loop(const char *host, const char *port, void *context)
