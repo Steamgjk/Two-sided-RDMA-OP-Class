@@ -59,8 +59,9 @@ void send_next_chunk(struct rdma_cm_id *id)
   {
     std::this_thread::sleep_for(std::chrono::milliseconds(30));
   }
-  ctx->buf_len = buf2send_len;
-  memcpy(ctx->buffer, buf2send, ctx->buf_len);
+  char*str = "iamok";
+  ctx->buf_len = strlen(str);
+  memcpy(ctx->buffer, str, ctx->buf_len);
   printf("send tchunk...\n");
   printf("buf= %s\n", ctx->buffer );
   write_remote(id, ctx->buf_len);

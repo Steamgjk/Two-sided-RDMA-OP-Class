@@ -9,8 +9,6 @@
 #include "messages.h"
 using namespace std;
 
-char* buf2send;
-size_t buf2send_len;
 struct client_context
 {
 	char *buffer;
