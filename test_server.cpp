@@ -28,6 +28,6 @@ void run(int thread_id)
 	}
 	else
 	{
-		rtos.rc_server_loop(44412);
+		//rtos.rc_server_loop(44412);
 	}
 }
