@@ -6,7 +6,6 @@
 #include <string>
 #include <thread>
 #include "common.h"
-#include "messages.h"
 using namespace std;
 
 struct conn_context

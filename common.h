@@ -51,5 +51,16 @@ struct context
 void rc_disconnect(struct rdma_cm_id *id);
 void rc_die(const char *message);
 
+void rc_disconnect(struct rdma_cm_id *id)
+{
+	rdma_disconnect(id);
+}
+
+void rc_die(const char *reason)
+{
+	fprintf(stderr, "%s\n", reason);
+	exit(EXIT_FAILURE);
+}
+
 
 #endif
