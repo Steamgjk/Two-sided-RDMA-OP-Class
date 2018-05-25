@@ -16,13 +16,6 @@ int main(int argc, char **argv)
 	ctx.buf_prepared = false;
 	ctx.buf_registered = false;
 
-	/*
-		rc_init(
-		    client_on_pre_conn,
-		    NULL, // on connect
-		    client_on_completion,
-		    NULL); // on disconnect
-	**/
 	int thread_id = 1;
 	std::thread recv_thread(run, thread_id);
 	recv_thread.detach();
@@ -50,5 +43,5 @@ int main(int argc, char **argv)
 void run(int thread_id)
 {
 	printf("thread_id=%d  ctx_ptr=%p\n", thread_id, &ctx);
-	rc_client_loop(remote_ip.c_str(), DEFAULT_PORT, &ctx);
+	//rc_client_loop(remote_ip.c_str(), DEFAULT_PORT, &ctx);
 }
