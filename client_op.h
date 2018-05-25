@@ -57,9 +57,9 @@ public:
 	static void run();
 	~client_op();
 private:
-	string local_ip;
-	string remote_ip;
-	int remote_port;
-	struct client_context ctx;
+	static string local_ip;
+	static string remote_ip;
+	static int remote_port;
+	static struct client_context ctx;
 
 };

@@ -135,7 +135,7 @@ void client_op::run()
 }
 void client_op::prepare_data(char* buf2send, size_t buf2send_len)
 {
-	(this->ctx).buffer_len = buf2send_len;
-	memcpy((this->ctx).buffer, buf2send, buf2send_len);
-	(this->ctx).buf_prepared = true;
+	(ctx).buffer_len = buf2send_len;
+	memcpy((ctx).buffer, buf2send, buf2send_len);
+	(ctx).buf_prepared = true;
 }
