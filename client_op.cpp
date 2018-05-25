@@ -131,6 +131,8 @@ void client_op::run()
 	    NULL); // on disconnect
 	char rport[30];
 	itoa(remote_port, rport, 10);
+	snprintf(rport, 30, "%d", remote_port);
+	printf("rport=%s\n", rport );
 	rc_client_loop(remote_ip.c_str(), rport, &ctx);
 }
 void client_op::prepare_data(char* buf2send, size_t buf2send_len)
