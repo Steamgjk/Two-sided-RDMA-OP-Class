@@ -30,9 +30,9 @@ public:
 	client();
 	~client();
 
-	void client_write_remote(struct rdma_cm_id *id, uint32_t len);
+	static void client_write_remote(struct rdma_cm_id *id, uint32_t len);
 	static void client_post_receive(struct rdma_cm_id *id);
-	void client_send_next_chunk(struct rdma_cm_id *id);
+	static void client_send_next_chunk(struct rdma_cm_id *id);
 	void client_on_pre_conn(struct rdma_cm_id *id);
 	static void client_on_completion(struct ibv_wc *wc);
 	void client_event_loop(struct rdma_event_channel *ec, int exit_on_disconnect);
