@@ -15,7 +15,7 @@ test_client.o: test_client.cpp
 	$(CC) $(CFLAGS) -c test_client.cpp
 server.o: server.cpp
 	$(CC) $(CFLAGS) -c server.cpp
-rdma_two_sided_client_op.o: client.cpp
+rdma_two_sided_client_op.o: rdma_two_sided_client_op.cpp
 	$(CC) $(CFLAGS) -c rdma_two_sided_client_op.cpp
 common.o: common.cpp
 	$(CC) $(CFLAGS) -c common.cpp
