@@ -142,7 +142,7 @@ void rc_client_loop(const char *host, const char *port, void *context)
   printf("check1\n");
   client_build_params(&cm_params);
   printf("check2\n");
-  client_event_loop(ec, 1); // exit on disconnect
+  event_loop(ec, 1); // exit on disconnect
 
   rdma_destroy_event_channel(ec);
 }
