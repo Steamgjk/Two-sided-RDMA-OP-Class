@@ -95,6 +95,7 @@ void client::client_on_pre_conn(struct rdma_cm_id *id, struct ibv_pd *pd)
 
   ctx->buf_registered = true;
   client_post_receive(id);
+  printf("after client_post_receive\n");
 }
 
 void client::client_on_completion(struct ibv_wc *wc)

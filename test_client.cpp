@@ -31,12 +31,21 @@ int main(int argc, char **argv)
 			printf("register = false\n");
 			continue;
 		}
+		if (ctx2.buf_registered == false)
+		{
+			printf("2 register = false\n");
+			continue;
+		}
 		char str[100];
 		memset(str, '\0', 100);
 		sprintf(str, "iamok-%d", cnt);
 		ctx.buf_len = 100;
 		memcpy(ctx.buffer, str, 100);
 		ctx.buf_prepared = true;
+
+		ctx2.buf_len = 100;
+		memcpy(ctx2.buffer, str, 100);
+		ctx2.buf_prepared = true;
 		cnt++;
 	}
 
