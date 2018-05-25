@@ -85,7 +85,7 @@ void client_on_pre_conn(struct rdma_cm_id *id)
 
   ctx->buf_registered = true;
   printf("ok registered  ptr=%p\n", ctx );
-  post_receive(id);
+  client_post_receive(id);
 }
 
 void client_on_completion(struct ibv_wc *wc)
