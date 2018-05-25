@@ -138,7 +138,7 @@ void rc_client_loop(const char *host, const char *port, void *context)
 
   conn->context = context;
 
-  build_params(&cm_params);
+  client_build_params(&cm_params);
 
   client_event_loop(ec, 1); // exit on disconnect
 
@@ -152,7 +152,7 @@ void client_event_loop(struct rdma_event_channel *ec, int exit_on_disconnect)
   struct rdma_cm_event *event = NULL;
   struct rdma_conn_param cm_params;
 
-  build_params(&cm_params);
+  client_build_params(&cm_params);
 
   while (rdma_get_cm_event(ec, &event) == 0)
   {
@@ -163,7 +163,7 @@ void client_event_loop(struct rdma_event_channel *ec, int exit_on_disconnect)
 
     if (event_copy.event == RDMA_CM_EVENT_ADDR_RESOLVED)
     {
-      build_connection(event_copy.id);
+      client_build_connection(event_copy.id);
       /*
             if (s_on_pre_conn_cb)
               s_on_pre_conn_cb(event_copy.id);
@@ -177,7 +177,7 @@ void client_event_loop(struct rdma_event_channel *ec, int exit_on_disconnect)
     }
     else if (event_copy.event == RDMA_CM_EVENT_CONNECT_REQUEST)
     {
-      build_connection(event_copy.id);
+      client_build_connection(event_copy.id);
 
       client_on_pre_conn(event_copy.id);
       /*
