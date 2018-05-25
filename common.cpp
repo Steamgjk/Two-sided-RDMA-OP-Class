@@ -11,7 +11,7 @@ struct context
 
   pthread_t cq_poller_thread;
 };
-/*
+
 static struct context *s_ctx = NULL;
 static pre_conn_cb_fn s_on_pre_conn_cb = NULL;
 static connect_cb_fn s_on_connect_cb = NULL;
@@ -22,17 +22,7 @@ static void build_context(struct ibv_context *verbs);
 static void build_qp_attr(struct ibv_qp_init_attr *qp_attr);
 static void event_loop(struct rdma_event_channel *ec, int exit_on_disconnect);
 static void * poll_cq(void *);
-**/
-struct context *s_ctx = NULL;
-pre_conn_cb_fn s_on_pre_conn_cb = NULL;
-connect_cb_fn s_on_connect_cb = NULL;
-completion_cb_fn s_on_completion_cb = NULL;
-disconnect_cb_fn s_on_disconnect_cb = NULL;
 
-void build_context(struct ibv_context *verbs);
-void build_qp_attr(struct ibv_qp_init_attr *qp_attr);
-void event_loop(struct rdma_event_channel *ec, int exit_on_disconnect);
-void * poll_cq(void *);
 
 void build_connection(struct rdma_cm_id *id)
 {
