@@ -57,9 +57,11 @@ void run(int thread_id)
 	printf("thread_id=%d  ctx_ptr=%p  ctx2=%p\n", thread_id, &ctx, &ctx2);
 	RdmaTwoSidedClientOp ct;
 	if (thread_id == 1)
-		ct.rc_client_loop("12.12.10.16", DEFAULT_PORT, &ctx);
+	{
+		ct.rc_client_loop("12.12.10.16", 44411, &ctx);
+	}
 	else
 	{
-		ct.rc_client_loop("12.12.10.17", DEFAULT_PORT, &ctx2);
+		ct.rc_client_loop("12.12.10.16", 44412, &ctx2);
 	}
 }
