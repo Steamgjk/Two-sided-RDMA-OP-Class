@@ -1,28 +1,9 @@
-#include <fcntl.h>
-#include <libgen.h>
-#include <string>
-#include <thread>
-#include "common.h"
-#include "messages.h"
-using namespace std;
-char* buf2send;
-size_t buf2send_len;
-struct client_context
-{
-  char *buffer;
-  size_t buf_len;
-  bool buf_prepared;
-  struct ibv_mr *buffer_mr;
-
-  struct message *msg;
-  struct ibv_mr *msg_mr;
-
-  uint64_t peer_addr;
-  uint32_t peer_rkey;
-};
+#include "client.h"
 
 
-static void write_remote(struct rdma_cm_id *id, uint32_t len)
+
+
+void write_remote(struct rdma_cm_id *id, uint32_t len)
 {
   struct client_context *ctx = (struct client_context *)id->context;
 
@@ -51,7 +32,7 @@ static void write_remote(struct rdma_cm_id *id, uint32_t len)
   TEST_NZ(ibv_post_send(id->qp, &wr, &bad_wr));
 }
 
-static void post_receive(struct rdma_cm_id *id)
+void post_receive(struct rdma_cm_id *id)
 {
   struct client_context *ctx = (struct client_context *)id->context;
 
@@ -71,7 +52,7 @@ static void post_receive(struct rdma_cm_id *id)
   TEST_NZ(ibv_post_recv(id->qp, &wr, &bad_wr));
 }
 
-static void send_next_chunk(struct rdma_cm_id *id)
+void send_next_chunk(struct rdma_cm_id *id)
 {
   struct client_context *ctx = (struct client_context *)id->context;
   while (!ctx->buf_prepared)
@@ -88,7 +69,7 @@ static void send_next_chunk(struct rdma_cm_id *id)
 
 
 
-static void on_pre_conn(struct rdma_cm_id *id)
+void on_pre_conn(struct rdma_cm_id *id)
 {
   struct client_context *ctx = (struct client_context *)id->context;
   posix_memalign((void **)&ctx->buffer, sysconf(_SC_PAGESIZE), BUFFER_SIZE);
@@ -100,7 +81,7 @@ static void on_pre_conn(struct rdma_cm_id *id)
   post_receive(id);
 }
 
-static void on_completion(struct ibv_wc *wc)
+void on_completion(struct ibv_wc *wc)
 {
   struct rdma_cm_id *id = (struct rdma_cm_id *)(uintptr_t)(wc->wr_id);
   struct client_context *ctx = (struct client_context *)id->context;
@@ -131,30 +112,4 @@ static void on_completion(struct ibv_wc *wc)
   }
 }
 
-int main(int argc, char **argv)
-{
-  struct client_context ctx;
-
-  string remote_ip = "12.12.10.16";
-  string file_name = "testfile";
-  if (argc >= 2)
-  {
-    remote_ip = argv[1];
-  }
-  if (argc >= 3)
-  {
-    file_name = argv[2];
-  }
-  ctx.buf_prepared = true;
-  rc_init(
-    on_pre_conn,
-    NULL, // on connect
-    on_completion,
-    NULL); // on disconnect
-
-  rc_client_loop(remote_ip.c_str(), DEFAULT_PORT, &ctx);
-
-
-  return 0;
-}
 
