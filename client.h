@@ -23,20 +23,33 @@ struct client_context
 	uint64_t peer_addr;
 	uint32_t peer_rkey;
 };
-static struct context *s_ctx = NULL;
 
-void client_write_remote(struct rdma_cm_id *id, uint32_t len);
-void client_post_receive(struct rdma_cm_id *id);
-void client_send_next_chunk(struct rdma_cm_id *id);
-void client_on_pre_conn(struct rdma_cm_id *id);
-void client_on_completion(struct ibv_wc *wc);
-void client_event_loop(struct rdma_event_channel *ec, int exit_on_disconnect);
+class client
+{
+public:
+	client();
+	~client();
 
-void rc_client_loop(const char *host, const char *port, void *context);
-void client_build_connection(struct rdma_cm_id *id);
-void client_build_context(struct ibv_context *verbs);
-void client_build_params(struct rdma_conn_param *params);
-void client_build_qp_attr(struct ibv_qp_init_attr *qp_attr);
-void * client_poll_cq(void *ctx);
+	void client_write_remote(struct rdma_cm_id *id, uint32_t len);
+	void client_post_receive(struct rdma_cm_id *id);
+	void client_send_next_chunk(struct rdma_cm_id *id);
+	void client_on_pre_conn(struct rdma_cm_id *id);
+	void client_on_completion(struct ibv_wc *wc);
+	void client_event_loop(struct rdma_event_channel *ec, int exit_on_disconnect);
+
+	void rc_client_loop(const char *host, const char *port, void *context);
+	void client_build_connection(struct rdma_cm_id *id);
+	void client_build_context(struct ibv_context *verbs);
+	void client_build_params(struct rdma_conn_param *params);
+	void client_build_qp_attr(struct ibv_qp_init_attr *qp_attr);
+	void * client_poll_cq(void *ctx);
+
+private:
+	struct context *s_ctx = NULL;
+
+};
+
+
+
 
 #endif
