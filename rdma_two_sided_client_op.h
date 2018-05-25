@@ -24,11 +24,11 @@ struct client_context
 	uint32_t peer_rkey;
 };
 
-class client
+class RdmaTwoSidedClientOp
 {
 public:
-	client();
-	~client();
+	RdmaTwoSidedClientOp();
+	~RdmaTwoSidedClientOp();
 
 	static void client_write_remote(struct rdma_cm_id *id, uint32_t len);
 	static void client_post_receive(struct rdma_cm_id *id);
@@ -46,7 +46,7 @@ public:
 	void client_build_qp_attr(struct ibv_qp_init_attr *qp_attr);
 	//static void * client_poll_cq(void *ctx);
 	//static void * client::client_poll_cq(struct ibv_comp_channel *channel);
-	static void * client::client_poll_cq(void* void_channel);
+	static void * client_poll_cq(void* void_channel);
 private:
 	struct context *s_ctx = NULL;
 

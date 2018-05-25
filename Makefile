@@ -4,7 +4,7 @@ TARGET = test_client
 TARGET1 = server
 LIBS=-libverbs -lrdmacm -pthread -libverbs -lrdmacm
 CFLAGS=-Wall -g -fpermissive -std=c++11
-OBJS=test_client.o common.o client.o
+OBJS=test_client.o common.o rdma_two_sided_client_op.o
 OBJS1=common.o server.o
 
 $(TARGET): $(OBJS)
@@ -15,8 +15,8 @@ test_client.o: test_client.cpp
 	$(CC) $(CFLAGS) -c test_client.cpp
 server.o: server.cpp
 	$(CC) $(CFLAGS) -c server.cpp
-client.o: client.cpp
-	$(CC) $(CFLAGS) -c client.cpp
+rdma_two_sided_client_op.o: client.cpp
+	$(CC) $(CFLAGS) -c rdma_two_sided_client_op.cpp
 common.o: common.cpp
 	$(CC) $(CFLAGS) -c common.cpp
 clean:

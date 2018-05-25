@@ -1,16 +1,17 @@
-#include "client.h"
+
+#include "rdma_two_sided_client_op.h"
 
 
 
-client::client()
+RdmaTwoSidedClientOp::RdmaTwoSidedClientOp()
 {
 
 }
-client::~client()
+RdmaTwoSidedClientOp::~RdmaTwoSidedClientOp()
 {
 
 }
-void client::client_write_remote(struct rdma_cm_id *id, uint32_t len)
+void RdmaTwoSidedClientOp::client_write_remote(struct rdma_cm_id *id, uint32_t len)
 {
   struct client_context *ctx = (struct client_context *)id->context;
 
@@ -39,7 +40,7 @@ void client::client_write_remote(struct rdma_cm_id *id, uint32_t len)
   TEST_NZ(ibv_post_send(id->qp, &wr, &bad_wr));
 }
 
-void client::client_post_receive(struct rdma_cm_id *id)
+void RdmaTwoSidedClientOp::client_post_receive(struct rdma_cm_id *id)
 {
   struct client_context *ctx = (struct client_context *)id->context;
 
@@ -59,7 +60,7 @@ void client::client_post_receive(struct rdma_cm_id *id)
   TEST_NZ(ibv_post_recv(id->qp, &wr, &bad_wr));
 }
 
-void client::client_send_next_chunk(struct rdma_cm_id *id)
+void RdmaTwoSidedClientOp::client_send_next_chunk(struct rdma_cm_id *id)
 {
   struct client_context *ctx = (struct client_context *)id->context;
   while (!ctx->buf_prepared)
@@ -80,7 +81,7 @@ void client::client_send_next_chunk(struct rdma_cm_id *id)
 
 
 
-void client::client_on_pre_conn(struct rdma_cm_id *id, struct ibv_pd *pd)
+void RdmaTwoSidedClientOp::client_on_pre_conn(struct rdma_cm_id *id, struct ibv_pd *pd)
 {
   struct client_context *ctx = (struct client_context *)id->context;
   posix_memalign((void **)&ctx->buffer, sysconf(_SC_PAGESIZE), BUFFER_SIZE);
@@ -98,7 +99,7 @@ void client::client_on_pre_conn(struct rdma_cm_id *id, struct ibv_pd *pd)
   printf("after client_post_receive\n");
 }
 
-void client::client_on_completion(struct ibv_wc *wc)
+void RdmaTwoSidedClientOp::client_on_completion(struct ibv_wc *wc)
 {
   struct rdma_cm_id *id = (struct rdma_cm_id *)(uintptr_t)(wc->wr_id);
   struct client_context *ctx = (struct client_context *)id->context;
@@ -131,7 +132,7 @@ void client::client_on_completion(struct ibv_wc *wc)
 
 
 
-void client::rc_client_loop(const char *host, const char *port, void *context)
+void RdmaTwoSidedClientOp::rc_client_loop(const char *host, const char *port, void *context)
 {
   printf("enter rc_client_loop\n");
   struct addrinfo *addr;
@@ -160,7 +161,7 @@ void client::rc_client_loop(const char *host, const char *port, void *context)
 
 
 
-void client::client_event_loop(struct rdma_event_channel *ec, int exit_on_disconnect)
+void RdmaTwoSidedClientOp::client_event_loop(struct rdma_event_channel *ec, int exit_on_disconnect)
 {
   struct rdma_cm_event *event = NULL;
   struct rdma_conn_param cm_params;
@@ -230,7 +231,7 @@ void client::client_event_loop(struct rdma_event_channel *ec, int exit_on_discon
 
 
 
-void client::client_build_connection(struct rdma_cm_id *id)
+void RdmaTwoSidedClientOp::client_build_connection(struct rdma_cm_id *id)
 {
   struct ibv_qp_init_attr qp_attr;
   client_build_context(id->verbs);
@@ -240,7 +241,7 @@ void client::client_build_connection(struct rdma_cm_id *id)
   printf("check 01\n");
 }
 
-void client::client_build_context(struct ibv_context *verbs)
+void RdmaTwoSidedClientOp::client_build_context(struct ibv_context *verbs)
 {
   if (s_ctx)
   {
@@ -264,7 +265,7 @@ void client::client_build_context(struct ibv_context *verbs)
 
 }
 
-void client::client_build_params(struct rdma_conn_param *params)
+void RdmaTwoSidedClientOp::client_build_params(struct rdma_conn_param *params)
 {
   memset(params, 0, sizeof(*params));
 
@@ -272,7 +273,7 @@ void client::client_build_params(struct rdma_conn_param *params)
   params->rnr_retry_count = 7; /* infinite retry */
 }
 
-void client::client_build_qp_attr(struct ibv_qp_init_attr *qp_attr)
+void RdmaTwoSidedClientOp::client_build_qp_attr(struct ibv_qp_init_attr *qp_attr)
 {
   memset(qp_attr, 0, sizeof(*qp_attr));
 
@@ -287,7 +288,7 @@ void client::client_build_qp_attr(struct ibv_qp_init_attr *qp_attr)
 }
 
 
-void * client::client_poll_cq(void* void_ch)
+void * RdmaTwoSidedClientOp::client_poll_cq(void* void_ch)
 {
   struct ibv_cq *cq;
   struct ibv_wc wc;
