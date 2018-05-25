@@ -31,5 +31,10 @@ void client_on_completion(struct ibv_wc *wc);
 void client_event_loop(struct rdma_event_channel *ec, int exit_on_disconnect);
 
 void rc_client_loop(const char *host, const char *port, void *context);
+void client_build_connection(struct rdma_cm_id *id);
+void client_build_context(struct ibv_context *verbs);
+void client_build_params(struct rdma_conn_param *params);
+void client_build_qp_attr(struct ibv_qp_init_attr *qp_attr);
+void * client_poll_cq(void *ctx);
 
 #endif
