@@ -164,7 +164,6 @@ void client_event_loop(struct rdma_event_channel *ec, int exit_on_disconnect)
     if (event_copy.event == RDMA_CM_EVENT_ADDR_RESOLVED)
     {
       build_connection(event_copy.id);
-
       /*
             if (s_on_pre_conn_cb)
               s_on_pre_conn_cb(event_copy.id);
