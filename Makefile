@@ -19,5 +19,7 @@ rdma_two_sided_client_op.o: rdma_two_sided_client_op.cpp
 	$(CC) $(CFLAGS) -c rdma_two_sided_client_op.cpp
 rdma_two_sided_server_op.o: rdma_two_sided_client_op.cpp
 	$(CC) $(CFLAGS) -c rdma_two_sided_server_op.cpp
+common.o: common.cpp
+	$(CC) $(CFLAGS) -c common.cpp
 clean:
 	rm -rf *.o  *~
