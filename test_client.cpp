@@ -23,11 +23,17 @@ int main(int argc, char **argv)
 	int thread_id = 1;
 	std::thread recv_thread(run, thread_id);
 	recv_thread.detach();
+	int cnt = 0;
 	while (1 == 1)
 	{
 		printf("main thread\n");
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-		//ctx.buf_prepared = true;
+		char str[100];
+		memset(str, '\0', 100);
+		sprintf(str, "iamok-%d", cnt);
+		memcpy(ctx.buffer, str, 100);
+		ctx.buf_prepared = true;
+		cnt++;
 	}
 
 	return 0;
