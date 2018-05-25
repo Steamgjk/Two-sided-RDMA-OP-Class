@@ -7,7 +7,7 @@ int main(int argc, char **argv)
 {
 	printf("waiting for connections. interrupt (^C) to exit.\n");
 	RdmaTwoSidedServerOp rtos;
-	rtos.rc_server_loop(44411);
+	rtos.rc_server_loop("44411");
 	/*
 	std::thread recv_thread(run, 1);
 	recv_thread.detach();
