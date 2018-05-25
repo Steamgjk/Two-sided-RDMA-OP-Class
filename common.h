@@ -48,8 +48,6 @@ struct context
 	pthread_t cq_poller_thread;
 };
 
-void rc_disconnect(struct rdma_cm_id *id);
-void rc_die(const char *message);
 
 void rc_disconnect(struct rdma_cm_id *id)
 {
