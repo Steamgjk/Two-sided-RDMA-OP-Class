@@ -23,6 +23,8 @@ struct client_context
 	uint64_t peer_addr;
 	uint32_t peer_rkey;
 };
+static struct context *s_ctx = NULL;
+
 void client_write_remote(struct rdma_cm_id *id, uint32_t len);
 void client_post_receive(struct rdma_cm_id *id);
 void client_send_next_chunk(struct rdma_cm_id *id);
