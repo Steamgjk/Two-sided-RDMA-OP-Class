@@ -138,7 +138,7 @@ void RdmaTwoSidedServerOp::server_on_disconnect(struct rdma_cm_id *id)
 
 
 
-void RdmaTwoSidedServerOp::rc_server_loop(const char *port)
+void RdmaTwoSidedServerOp::rc_server_loop(const char *port, struct conn_context* ctx)
 {
   struct sockaddr_in6 addr;
   struct rdma_cm_id *listener = NULL;
@@ -153,7 +153,7 @@ void RdmaTwoSidedServerOp::rc_server_loop(const char *port)
   TEST_NZ(rdma_bind_addr(listener, (struct sockaddr *)&addr));
   TEST_NZ(rdma_listen(listener, 10)); /* backlog=10 is arbitrary */
 
-  server_event_loop(ec, 0); // don't exit on disconnect
+  server_event_loop(ec, 0, ctx); // don't exit on disconnect
 
   rdma_destroy_id(listener);
   rdma_destroy_event_channel(ec);
