@@ -23,10 +23,10 @@ struct client_context
 	uint64_t peer_addr;
 	uint32_t peer_rkey;
 };
-void write_remote(struct rdma_cm_id *id, uint32_t len);
-void post_receive(struct rdma_cm_id *id);
-void send_next_chunk(struct rdma_cm_id *id);
-void on_pre_conn(struct rdma_cm_id *id);
-void on_completion(struct ibv_wc *wc);
+void client_write_remote(struct rdma_cm_id *id, uint32_t len);
+void client_post_receive(struct rdma_cm_id *id);
+void client_send_next_chunk(struct rdma_cm_id *id);
+void client_on_pre_conn(struct rdma_cm_id *id);
+void client_on_completion(struct ibv_wc *wc);
 
 #endif

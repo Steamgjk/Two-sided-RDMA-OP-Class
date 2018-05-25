@@ -3,7 +3,7 @@
 
 
 
-void write_remote(struct rdma_cm_id *id, uint32_t len)
+void client_write_remote(struct rdma_cm_id *id, uint32_t len)
 {
   struct client_context *ctx = (struct client_context *)id->context;
 
@@ -32,7 +32,7 @@ void write_remote(struct rdma_cm_id *id, uint32_t len)
   TEST_NZ(ibv_post_send(id->qp, &wr, &bad_wr));
 }
 
-void post_receive(struct rdma_cm_id *id)
+void client_post_receive(struct rdma_cm_id *id)
 {
   struct client_context *ctx = (struct client_context *)id->context;
 
@@ -52,7 +52,7 @@ void post_receive(struct rdma_cm_id *id)
   TEST_NZ(ibv_post_recv(id->qp, &wr, &bad_wr));
 }
 
-void send_next_chunk(struct rdma_cm_id *id)
+void client_send_next_chunk(struct rdma_cm_id *id)
 {
   struct client_context *ctx = (struct client_context *)id->context;
   while (!ctx->buf_prepared)
@@ -73,7 +73,7 @@ void send_next_chunk(struct rdma_cm_id *id)
 
 
 
-void on_pre_conn(struct rdma_cm_id *id)
+void client_on_pre_conn(struct rdma_cm_id *id)
 {
   struct client_context *ctx = (struct client_context *)id->context;
   posix_memalign((void **)&ctx->buffer, sysconf(_SC_PAGESIZE), BUFFER_SIZE);
@@ -88,7 +88,7 @@ void on_pre_conn(struct rdma_cm_id *id)
   post_receive(id);
 }
 
-void on_completion(struct ibv_wc *wc)
+void client_on_completion(struct ibv_wc *wc)
 {
   struct rdma_cm_id *id = (struct rdma_cm_id *)(uintptr_t)(wc->wr_id);
   struct client_context *ctx = (struct client_context *)id->context;

@@ -17,9 +17,9 @@ int main(int argc, char **argv)
 	ctx.buf_registered = false;
 
 	rc_init(
-	    on_pre_conn,
+	    client_on_pre_conn,
 	    NULL, // on connect
-	    on_completion,
+	    client_on_completion,
 	    NULL); // on disconnect
 
 	int thread_id = 1;
