@@ -125,9 +125,9 @@ void client_op::run()
 {
 	ctx.buf_prepared = false;
 	rc_init(
-	    this->on_pre_conn,
+	    on_pre_conn,
 	    NULL, // on connect
-	    this->on_completion,
+	    on_completion,
 	    NULL); // on disconnect
 	char rport[30];
 	//itoa(remote_port, rport, 10);
