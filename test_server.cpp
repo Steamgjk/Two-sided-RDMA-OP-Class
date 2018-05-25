@@ -6,6 +6,9 @@ void run(int thread_id);
 int main(int argc, char **argv)
 {
 	printf("waiting for connections. interrupt (^C) to exit.\n");
+	RdmaTwoSidedServerOp rtos;
+	rtos.rc_server_loop(44411);
+	/*
 	std::thread recv_thread(run, 1);
 	recv_thread.detach();
 	std::thread recv_thread2(run, 2);
@@ -15,7 +18,7 @@ int main(int argc, char **argv)
 		printf("main thread\n");
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
-
+	**/
 	return 0;
 }
 void run(int thread_id)
