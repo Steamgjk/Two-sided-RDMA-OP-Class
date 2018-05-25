@@ -187,6 +187,10 @@ void client::client_event_loop(struct rdma_event_channel *ec, int exit_on_discon
       client_on_pre_conn(event_copy.id);
       printf("check 6\n");
       TEST_NZ(rdma_resolve_route(event_copy.id, TIMEOUT_IN_MS));
+
+      printf("ok here poll cq\n");
+      //
+      client_poll_cq(NULL);
     }
     else if (event_copy.event == RDMA_CM_EVENT_ROUTE_RESOLVED)
     {
@@ -264,7 +268,7 @@ void client::client_build_context(struct ibv_context *verbs)
   /* cqe=10 is arbitrary */
   TEST_NZ(ibv_req_notify_cq(s_ctx->cq, 0));
 
-  TEST_NZ(pthread_create(&s_ctx->cq_poller_thread, NULL, client_poll_cq, NULL));
+  //TEST_NZ(pthread_create(&s_ctx->cq_poller_thread, NULL, client_poll_cq, NULL));
 }
 
 void client::client_build_params(struct rdma_conn_param *params)
